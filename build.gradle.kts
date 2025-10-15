@@ -16,7 +16,7 @@ allprojects {
     group = "kr.thedream"
     version = "0.0.1-SNAPSHOT"
 
-    java { toolchain { languageVersion = JavaLanguageVersion.of(22) } }
+    java { toolchain { JavaLanguageVersion.of(22) } }
 
     kotlin {
         compilerOptions {
@@ -28,7 +28,9 @@ allprojects {
     }
 
     // Java 컴파일러도 release 21로 정렬하여 Kotlin과 타겟 일치
-    tasks.withType<JavaCompile>().configureEach { options.release.set(21) }
+    tasks.withType<JavaCompile>().configureEach {
+        options.release.set(21)
+    }
 
     dependencies {
         // kotlin
@@ -38,6 +40,9 @@ allprojects {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+        // mysql
+        runtimeOnly("com.mysql:mysql-connector-j")
 
         // test
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
