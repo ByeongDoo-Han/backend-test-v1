@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  bigs-db:
+    image: mysql:8.0
+    container_name: bigs-db
+    environment:
+      MYSQL_DATABASE: bigs
+      MYSQL_USER: ENC(zxNc6uND0RyE0iIs97FuW5V7yUYCkRUf)
+      MYSQL_PASSWORD: ENC(nF51gWxOkqvnKwexMZu7T+aj13ihWi/Y)
+      MYSQL_ROOT_PASSWORD: ENC(nF51gWxOkqvnKwexMZu7T+aj13ihWi/Y)
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - bigs-network
+
+  bigs-app:
+    build: .
+    container_name: bigs-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - bigs-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://bigs-db:3306/bigs
+      JASYPT_ENCRYPTOR_PASSWORD: ${JASYPT_ENCRYPTOR_PASSWORD}
+    networks:
+      - bigs-network
+
+volumes:
+  mysql_data:
+
+networks:
+  bigs-network:
