@@ -36,6 +36,9 @@ allprojects {
         // kotlin
         implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+        // jasypt
+        implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
+
         // jackson
         implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
