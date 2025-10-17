@@ -11,6 +11,7 @@ import im.bigs.pg.domain.calculation.FeeCalculator
 import im.bigs.pg.domain.payment.Payment
 import im.bigs.pg.domain.payment.PaymentStatus
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 /**
  * 결제 생성 유스케이스 구현체.
@@ -29,6 +30,13 @@ class PaymentService(
      * - 현재 예시 구현은 하드코드된 수수료(3% + 100)로 계산합니다.
      * - 과제: 제휴사별 수수료 정책을 적용하도록 개선해 보세요.
      */
+    /**
+     * @param command 제휴사 식별자, 결제 금액(정수 금액 권장), 카드 BIN(없을 수 있음), 카드 마지막 4자리(없을 수 있음), 상품명
+     * @throws IllegalArgumentException 존재 하지 않는 파트너 id`
+     * @throws IllegalArgumentException 비활성 파트너 id
+     * @throws IllegalArgumentException 요청한 파트너 id에 해당하는 pg id 없음
+     * @return 생성된 결제 객체
+     */
     override fun pay(command: PaymentCommand): Payment {
         val partner = partnerRepository.findById(command.partnerId)
             ?: throw IllegalArgumentException("Partner not found: ${command.partnerId}")
@@ -37,6 +45,7 @@ class PaymentService(
         val pgClient = pgClients.firstOrNull { it.supports(partner.id) }
             ?: throw IllegalStateException("No PG client for partner ${partner.id}")
 
+        // 결제 승인
         val approve = pgClient.approve(
             PgApproveRequest(
                 partnerId = partner.id,
@@ -46,13 +55,16 @@ class PaymentService(
                 productName = command.productName,
             ),
         )
-        val hardcodedRate = java.math.BigDecimal("0.0300")
-        val hardcodedFixed = java.math.BigDecimal("100")
-        val (fee, net) = FeeCalculator.calculateFee(command.amount, hardcodedRate, hardcodedFixed)
+
+        // 수수료 계산
+        val feePolicy = feePolicyRepository.findEffectivePolicy(partner.id)
+        val feePolicyRate = feePolicy?.percentage ?: BigDecimal.ZERO
+        val feePolicyFixed = feePolicy?.fixedFee
+        val (fee, net) = FeeCalculator.calculateFee(command.amount, feePolicyRate, feePolicyFixed)
         val payment = Payment(
             partnerId = partner.id,
             amount = command.amount,
-            appliedFeeRate = hardcodedRate,
+            appliedFeeRate = feePolicyRate,
             feeAmount = fee,
             netAmount = net,
             cardBin = command.cardBin,
@@ -62,6 +74,7 @@ class PaymentService(
             status = PaymentStatus.APPROVED,
         )
 
+        //저장
         return paymentRepository.save(payment)
     }
 }
