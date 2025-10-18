@@ -1,8 +1,14 @@
 package im.bigs.pg.domain.payment
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.math.BigDecimal
+import java.security.MessageDigest
 import java.time.LocalDateTime
+import java.util.Base64
+import javax.crypto.Cipher
+import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 /**
  * 결제 이력의 스냅샷.
@@ -45,7 +51,16 @@ data class Payment(
 /** 결제 상태.
  * - 승인(Approved), 취소(Canceled) 등 단순 상태를 표현합니다.
  */
-enum class PaymentStatus { APPROVED, CANCELED }
+enum class PaymentStatus(val value: String) {
+    APPROVED("APPROVED"),
+    CANCELED("CANCELED");
+
+    companion object {
+        fun from(value: String?): PaymentStatus? {
+            return PaymentStatus.entries.firstOrNull { it.value == value }
+        }
+    }
+}
 
 /** 조회 API의 통계 응답에 사용되는 값 모음. */
 /** 조회 API의 통계 응답에 사용되는 값 모음. */
