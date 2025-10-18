@@ -36,6 +36,9 @@ allprojects {
         // kotlin
         implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+        // webflux
+        implementation("org.springframework.boot:spring-boot-starter-webflux:3.5.5")
+
         // jasypt
         implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
 
