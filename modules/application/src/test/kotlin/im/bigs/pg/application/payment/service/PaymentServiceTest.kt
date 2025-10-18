@@ -73,7 +73,7 @@ class PaymentServiceTest {
         every { partnerRepo.findById(2L) } returns partner2
         every { feeRepo.findEffectivePolicy(2L, any()) } returns feePolicy2
 
-        // Partner 3 (5% 수수료)
+        // Partner 3 (2.35% 수수료)
         val partner3 = Partner(3L, "PARTNER-C", "Partner C", true)
         val feePolicy3 = FeePolicy(12L, 3L, LocalDateTime.now(), BigDecimal("0.0235"), BigDecimal.ZERO)
         every { partnerRepo.findById(3L) } returns partner3
@@ -103,7 +103,7 @@ class PaymentServiceTest {
 
         // then (Partner 3 수수료 검증)
         val capturedPayment3 = savedSlot.captured
-        assertEquals(BigDecimal("26"), capturedPayment3.feeAmount) // 20000 * 5%
+        assertEquals(BigDecimal("26"), capturedPayment3.feeAmount)
         assertEquals(BigDecimal("1085"), capturedPayment3.netAmount)
     }
 }
