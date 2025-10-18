@@ -35,7 +35,7 @@ class PaymentService(
      * @throws IllegalArgumentException 존재 하지 않는 파트너 id`
      * @throws IllegalArgumentException 비활성 파트너 id
      * @throws IllegalArgumentException 요청한 파트너 id에 해당하는 pg id 없음
-     * @return 생성된 결제 객체
+     * @return pgClient 결제 승인 및 수수료 계산 후 생성된 결제 객체를 반환
      */
     override fun pay(command: PaymentCommand): Payment {
         val partner = partnerRepository.findById(command.partnerId)
@@ -45,16 +45,17 @@ class PaymentService(
         val pgClient = pgClients.firstOrNull { it.supports(partner.id) }
             ?: throw IllegalStateException("No PG client for partner ${partner.id}")
 
-        // 결제 승인
-        val approve = pgClient.approve(
-            PgApproveRequest(
-                partnerId = partner.id,
-                amount = command.amount,
-                cardBin = command.cardBin,
-                cardLast4 = command.cardLast4,
-                productName = command.productName,
-            ),
+        // pg api 테스트용 카드 정보
+        val approveCommand = PgApproveRequest(
+            cardNumber = "1111-1111-1111-1111",
+            birthDate = "19900101",
+            expiry = "1227",
+            password = "12",
+            amount = command.amount
         )
+
+        // 결제 승인
+        val approve = pgClient.approve(approveCommand)
 
         // 수수료 계산
         val feePolicy = feePolicyRepository.findEffectivePolicy(partner.id)
