@@ -1,7 +1,7 @@
 package im.bigs.pg.external.exception
 
-import im.bigs.pg.application.pg.port.out.TestPgErrorResult
+import im.bigs.pg.external.dto.TestPgExceptionResponse
 
 class TestPgException(
-    val errorResult: TestPgErrorResult
+    val errorResult: TestPgExceptionResponse
 ) : RuntimeException(errorResult.message)
