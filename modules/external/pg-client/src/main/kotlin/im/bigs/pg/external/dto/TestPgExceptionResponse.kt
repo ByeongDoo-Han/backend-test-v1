@@ -1,6 +1,6 @@
-package im.bigs.pg.application.pg.port.out
+package im.bigs.pg.external.dto
 
-data class TestPgErrorResult(
+data class TestPgExceptionResponse(
     val code: Int?,
     val errorCode: String? = null,
     val message: String,

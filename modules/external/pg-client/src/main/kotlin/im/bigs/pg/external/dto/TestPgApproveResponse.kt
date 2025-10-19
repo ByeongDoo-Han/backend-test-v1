@@ -1,9 +1,9 @@
-package im.bigs.pg.application.pg.port.out
+package im.bigs.pg.external.dto
 
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-data class TestPgApproveResult(
+data class TestPgApproveResponse(
     val approvalCode: String,
     val approvedAt: LocalDateTime,
     val maskedCardLast4: String,
