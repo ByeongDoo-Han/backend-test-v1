@@ -1,19 +1,20 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:pgdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ""
+    url: jdbc:mysql://localhost:3306/bigs
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ENC(qgv0rBVz/WnAe83qTf7jG0HtLV23IqRY)
+    password: ENC(TeYtDtyX7PdJ7z5LTxLVFHIyCWsXay61)
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
         jdbc.time_zone: UTC
   jackson:
     serialization:
       write-dates-as-timestamps: false
-server:
-  port: 8080
-
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD}
