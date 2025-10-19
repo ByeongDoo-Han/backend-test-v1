@@ -3,10 +3,10 @@ package im.bigs.pg.external.pg
 import im.bigs.pg.application.pg.port.out.PgApproveRequest
 import im.bigs.pg.application.pg.port.out.PgApproveResult
 import im.bigs.pg.application.pg.port.out.PgClientOutPort
+import im.bigs.pg.application.pg.port.out.TestPgApproveRequest
 import im.bigs.pg.common.util.CardInfo
 import im.bigs.pg.common.util.PaymentEncryptor
 import im.bigs.pg.domain.payment.PaymentStatus
-import im.bigs.pg.external.dto.TestPgApproveRequest
 import im.bigs.pg.external.dto.TestPgApproveResponse
 import im.bigs.pg.external.dto.TestPgExceptionResponse
 import im.bigs.pg.external.exception.CustomException
