@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.4.4" apply false
+    id("org.springframework.boot") version "3.3.1" apply false
     id("io.spring.dependency-management") version "1.1.7" apply false
     kotlin("plugin.jpa") version "1.9.25"
     kotlin("kapt") version "1.9.25"
@@ -35,9 +35,6 @@ allprojects {
     dependencies {
         // kotlin
         implementation("org.jetbrains.kotlin:kotlin-reflect")
-
-        // webflux
-        implementation("org.springframework.boot:spring-boot-starter-webflux:3.5.5")
 
         // jasypt
         implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")

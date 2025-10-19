@@ -7,6 +7,8 @@ tasks.bootJar {
 }
 
 dependencies {
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+    implementation("org.springframework.boot:spring-boot-starter-webflux:3.5.5")
     implementation(projects.modules.domain)
     implementation(projects.modules.application)
     implementation(projects.modules.infrastructure.persistence)
