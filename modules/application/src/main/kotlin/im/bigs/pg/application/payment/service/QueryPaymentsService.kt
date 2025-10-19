@@ -26,6 +26,9 @@ import java.util.Base64
 class QueryPaymentsService(
     private val paymentRepository: PaymentOutPort
 ) : QueryPaymentsUseCase {
+    companion object {
+        private const val UTC = "UTC"
+    }
     /**
      * 필터를 기반으로 결제 내역을 조회합니다.
      *
@@ -39,7 +42,7 @@ class QueryPaymentsService(
         val status: PaymentStatus? = PaymentStatus.from(filter.status)
         val (cursorCreatedAt, cursorId) = decodeCursor(filter.cursor)?.let { decoded ->
             val createdAt = decoded.first?.let {
-                LocalDateTime.ofInstant(decoded.first, ZoneId.of("UTC"))
+                LocalDateTime.ofInstant(decoded.first, ZoneId.of(UTC))
             }
             val id = decoded.second
             createdAt to id
