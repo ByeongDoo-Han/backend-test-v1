@@ -95,7 +95,6 @@ class PaymentRepositoryPagingTest @Autowired constructor(
         kotlin.test.assertFalse(resultPage.hasNext, "다음 페이지가 없어야 합니다.")
         kotlin.test.assertNull(resultPage.nextCursorCreatedAt, "다음 생성일시 커서는 null이어야 합니다.")
         kotlin.test.assertNull(resultPage.nextCursorId, "다음 ID 커서는 null이어야 합니다.")
-
     }
 
     @Test

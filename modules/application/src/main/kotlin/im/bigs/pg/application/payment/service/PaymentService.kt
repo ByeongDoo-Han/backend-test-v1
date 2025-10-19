@@ -75,7 +75,7 @@ class PaymentService(
             status = PaymentStatus.APPROVED,
         )
 
-        //저장
+        // 저장
         return paymentRepository.save(payment)
     }
 }

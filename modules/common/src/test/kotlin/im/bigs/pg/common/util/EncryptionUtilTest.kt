@@ -25,7 +25,7 @@ class EncryptionUtilTest {
             amount = BigDecimal.valueOf(10000)
         )
         val apiKey = UUID.randomUUID().toString()
-        
+
         // 12바이트 IV를 랜덤하게 생성하고 Base64URL로 인코딩
         val ivBytes = Random.nextBytes(12)
         val ivBase64Url = Base64.getUrlEncoder().withoutPadding().encodeToString(ivBytes)

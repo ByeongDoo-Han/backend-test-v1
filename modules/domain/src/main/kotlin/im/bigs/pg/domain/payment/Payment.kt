@@ -1,14 +1,8 @@
 package im.bigs.pg.domain.payment
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.math.BigDecimal
-import java.security.MessageDigest
 import java.time.LocalDateTime
-import java.util.Base64
-import javax.crypto.Cipher
-import javax.crypto.spec.GCMParameterSpec
-import javax.crypto.spec.SecretKeySpec
 
 /**
  * 결제 이력의 스냅샷.
