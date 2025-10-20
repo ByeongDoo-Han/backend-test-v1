@@ -2,6 +2,7 @@ package im.bigs.pg.application.payment.service
 
 import im.bigs.pg.application.partner.port.out.FeePolicyOutPort
 import im.bigs.pg.application.partner.port.out.PartnerOutPort
+import im.bigs.pg.application.payment.port.`in`.BuyCommand
 import im.bigs.pg.application.payment.port.`in`.PaymentCommand
 import im.bigs.pg.application.payment.port.`in`.PaymentUseCase
 import im.bigs.pg.application.payment.port.out.PaymentOutPort
@@ -76,6 +77,42 @@ class PaymentService(
         )
 
         // 저장
+        return paymentRepository.save(payment)
+    }
+
+    override fun buy(command: BuyCommand): Payment {
+        val partner = partnerRepository.findById(command.partnerId)
+            ?: throw IllegalArgumentException("Partner not found: ${command.partnerId}")
+        require(partner.active) { "Partner is inactive: ${partner.id}" }
+
+        val pgClient = pgClients.firstOrNull { it.supports(partner.id) }
+            ?: throw IllegalStateException("No PG client for partner ${partner.id}")
+
+        val approveCommand = PgApproveRequest(
+            cardNumber = command.cardNumber,
+            birthDate = command.birthDate,
+            expiry = command.expiry,
+            password = command.password,
+            amount = command.amount
+        )
+        val approve = pgClient.approve(approveCommand)
+
+        val feePolicy = feePolicyRepository.findEffectivePolicy(partner.id)
+        val feePolicyRate = feePolicy?.percentage ?: BigDecimal.ZERO
+        val feePolicyFixed = feePolicy?.fixedFee
+        val (fee, net) = FeeCalculator.calculateFee(command.amount, feePolicyRate, feePolicyFixed)
+        val payment = Payment(
+            partnerId = partner.id,
+            amount = command.amount,
+            appliedFeeRate = feePolicyRate,
+            feeAmount = fee,
+            netAmount = net,
+            cardBin = command.cardNumber.take(4) + command.cardNumber.substring(5, 9),
+            cardLast4 = command.cardNumber.substring(15, command.cardNumber.length),
+            approvalCode = approve.approvalCode,
+            approvedAt = approve.approvedAt,
+            status = PaymentStatus.APPROVED,
+        )
         return paymentRepository.save(payment)
     }
 }

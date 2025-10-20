@@ -1,10 +1,12 @@
 package im.bigs.pg.api.payment
 
+import im.bigs.pg.api.payment.dto.CreateBuyRequest
 import im.bigs.pg.api.payment.dto.CreatePaymentRequest
 import im.bigs.pg.api.payment.dto.PaymentResponse
 import im.bigs.pg.api.payment.dto.QueryResponse
 import im.bigs.pg.api.payment.dto.Summary
 import im.bigs.pg.api.payment.swagger.PaymentApiDocs
+import im.bigs.pg.application.payment.port.`in`.BuyCommand
 import im.bigs.pg.application.payment.port.`in`.PaymentCommand
 import im.bigs.pg.application.payment.port.`in`.PaymentUseCase
 import im.bigs.pg.application.payment.port.`in`.QueryFilter
@@ -32,6 +34,25 @@ class PaymentController(
     private val paymentUseCase: PaymentUseCase,
     private val queryPaymentsUseCase: QueryPaymentsUseCase,
 ) : PaymentApiDocs {
+
+    @PostMapping("/buy")
+    fun buy(@RequestBody request: CreateBuyRequest): ResponseEntity<PaymentResponse> {
+        return ResponseEntity.ok(
+            PaymentResponse.from(
+                paymentUseCase.buy(
+                    BuyCommand(
+                        cardNumber = request.cardNumber,
+                        birthDate = request.birthDate,
+                        expiry = request.expiry,
+                        password = request.password,
+                        amount = request.amount,
+                        productName = request.productName,
+                        partnerId = request.partnerId
+                    )
+                )
+            )
+        )
+    }
 
     /** API 응답을 위한 변환용 DTO. 도메인 모델을 그대로 노출하지 않습니다. */
 

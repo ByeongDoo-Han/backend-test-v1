@@ -57,7 +57,7 @@ class TestPgClient(
             }
             .bodyToMono(TestPgApproveResponse::class.java)
             .block(Duration.ofSeconds(5))
-
+        logger.info("success : {}", approveResult)
         if (approveResult == null) {
             throw CustomException(ExceptionCode.NO_RESPONSE_FROM_PG, enc)
         }
