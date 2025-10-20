@@ -1,0 +1,13 @@
+# API 버전
+apiVersion: 1
+
+providers:
+  - name: 'default' # 프로바이더 이름 (자유롭게 지정)
+    orgId: 1
+    folder: ''      # 대시보드를 저장할 Grafana 내 폴더 이름 (''는 General 폴더)
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      # 컨테이너 내부에서 대시보드 JSON 파일들이 위치할 경로
+      path: /var/lib/grafana/dashboards
