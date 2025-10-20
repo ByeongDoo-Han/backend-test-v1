@@ -8,9 +8,6 @@
 # .env
 .env
 
-# frontend
-frontend
-
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
