@@ -6,9 +6,8 @@ services:
     container_name: bigs-db
     environment:
       MYSQL_DATABASE: bigs
-      MYSQL_USER: ENC(zxNc6uND0RyE0iIs97FuW5V7yUYCkRUf)
-      MYSQL_PASSWORD: ENC(nF51gWxOkqvnKwexMZu7T+aj13ihWi/Y)
-      MYSQL_ROOT_PASSWORD: ENC(nF51gWxOkqvnKwexMZu7T+aj13ihWi/Y)
+      MYSQL_USER: bigs_user
+      MYSQL_PASSWORD: bigs1234
     ports:
       - "3306:3306"
     volumes:
@@ -25,12 +24,62 @@ services:
       - bigs-db
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://bigs-db:3306/bigs
-      JASYPT_ENCRYPTOR_PASSWORD: ${JASYPT_ENCRYPTOR_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: bigs_user
+      SPRING_DATASOURCE_PASSWORD: bigs1234
+    networks:
+      - bigs-network
+
+  bigs-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bigs-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - bigs-network
+
+  bigs-nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - bigs-app
+      - bigs-frontend
+    networks:
+      - bigs-network
+
+  bigs-prometheus:
+    image: prom/prometheus
+    container_name: bigs-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - bigs-network
+
+  bigs-grafana:
+    image: grafana/grafana
+    container_name: bigs-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana-provisioning/dashboards-json:/etc/grafana/provisioning/dashboards-json
     networks:
       - bigs-network
 
 volumes:
   mysql_data:
+  grafana_data:
 
 networks:
   bigs-network:
