@@ -21,7 +21,7 @@
 
 ## 2.API 엔드포인트
 
-1. 결제 생성
+### 1. 결제 생성
 
 - 엔드포인트: `POST /api/v1/payments`
 
@@ -46,7 +46,7 @@
         * `status` : 승인 상태
         * `createdAt` : 결제 생성 시간
 
-2. 결제 내역 조회 + 통계
+### 2. 결제 내역 조회 + 통계
 
 - 엔드포인트: `GET /api/v1/payments`
 
@@ -62,7 +62,7 @@
     * 응답 :
         * `items[]`, `summary{count,totalAmount,totalNetAmount}`, `nextCursor`, `hasNext`
 
-3. 결제 요청 (추가 - 카드 번호 입력 시나리오 적용)
+### 3. 결제 요청 (추가 - 카드 번호 입력 시나리오 적용)
 
 - 엔드포인트: `POST /api/v1/payments/buy`
 
@@ -128,7 +128,7 @@
 
 ### 4.1.2
 
-macOS 터미널에서 설치하기
+- macOS 터미널에서 설치하기
 
 ```bash
 brew install docker
@@ -137,14 +137,14 @@ brew install docker-compose
 
 ### 4.1.3 설치 확인
 
-터미널 (cmd, powershell, 터미널 등)에서 아래 명령 실행
+#### 터미널 (cmd, powershell, 터미널 등)에서 아래 명령 실행
 
 ```
 docker version
 docker compose version
 ```
 
-출력 예시
+#### 출력 예시
 
 ```
 Docker version 28.0.4, build cb74dfc
@@ -153,13 +153,13 @@ Docker Compose version v2.34.0
 
 ### 4.2. 애플리케이션 실행
 
-프로젝트 클론
+#### 프로젝트 클론
 
 ```
 git clone https://github.com/ByeongDoo-Han/backend-test-v1
 ```
 
-디렉토리 이동 && 실행 권한 부여 && 프로젝트 빌드
+#### 디렉토리 이동 && 실행 권한 부여 && 프로젝트 빌드
 
 ```
 cd backend-test-v1
@@ -167,7 +167,7 @@ chmod +x ./gradlew
 ./gradlew clean build
 ```
 
-프로젝트 루트 디렉토리에서 아래 명령어를 실행하여 애플리케이션 서버와 데이터베이스를 한 번에 실행합니다.
+- 프로젝트 루트 디렉토리에서 아래 명령어를 실행하여 애플리케이션 서버와 데이터베이스를 한 번에 실행합니다.
 
 ```bash
   docker compose up --build
@@ -183,25 +183,25 @@ chmod +x ./gradlew
 
 ## 5. 명령어 사용 방법
 
-프로젝트의 단위 테스트 및 통합 테스트를 실행하려면 아래 명령어를 사용합니다.
+- 프로젝트의 단위 테스트 및 통합 테스트를 실행하려면 아래 명령어를 사용합니다.
 
 ```bash
   ./gradlew test
 ```
 
-컴파일 + 모든 테스트를 실행하려면 아래 명령어를 사용합니다.
+- 컴파일 + 모든 테스트를 실행하려면 아래 명령어를 사용합니다.
 
 ```bash
   ./gradlew clean build
 ```
 
-API 동작을 실행하려면 아래 명령어를 사용합니다.
+- API 동작을 실행하려면 아래 명령어를 사용합니다.
 
 ```bash
   ./gradlew :modules:bootstrap:api-payment-gateway:bootRun
 ```
 
-코드 스타일 검사 및 자동정렬하려면 아래 명령어를 사용합니다.
+- 코드 스타일 검사 및 자동정렬하려면 아래 명령어를 사용합니다.
 
 ```bash
   ./gradlew ktlintCheck | ktlintFormat
@@ -234,7 +234,7 @@ API 동작을 실행하려면 아래 명령어를 사용합니다.
 
 - 사용자가 카드 정보를 입력해서 결제를 요청하는 상황을 가정해 결제 페이지를 구현했습니다. 
 - 성공하지 않는 카드 번호를 입력해서 결제 실패 응답을 확인할 수 있습니다.
-- Test PG API 연동 문서를 활용해 `EncryptionUtil` 에 pg사에 전달할 내용을 암호화하도록 구현했습니다.
+- Test PG API 연동 문서를 활용해 `EncryptionUtil` 에 pg사에 전달할 내용 암호화 로직을 구현했습니다.
 
 ### 5.4. Swagger 적용
 
@@ -247,5 +247,5 @@ API 동작을 실행하려면 아래 명령어를 사용합니다.
 ### 5.6. 예외 처리
 
 - `GlobalExceptionHandler`를 통해 특정 exception이 발생했을 때 해당 상황에 맞는 정보를 클라이언트에 전달하도록 구성했습니다.
-- CustomException
+- `CustomException` : 특정 exception 코드와 오류가 발생한 ENC값을 가지는 객체입니다.
 - ExceptionCode
