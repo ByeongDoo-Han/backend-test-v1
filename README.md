@@ -12,6 +12,7 @@
 - **external**: 외부 PG사 API 연동 등 외부 시스템과 관련된 기술을 구현합니다.
 
 - 아래 링크는 프로젝트 실행 후 접속 가능합니다.
+
 **Swagger** : [link](http://localhost:8080/swagger-ui/index.html)
 
 **Frontend** : [link](http://localhost:3000/)
@@ -224,6 +225,7 @@ API 동작을 실행하려면 아래 명령어를 사용합니다.
 
 ### 5.2. Prometheus & Grafana
 
+- grafana-provisioning 적용을 통해 프로젝트 실행 시 필요 대시보드를 자동으로 구성하도록 설정했습니다. 
 - **Spring Boot Actuator**: 백엔드 애플리케이션의 다양한 메트릭(JVM, CPU, HTTP 요청 등)을 외부에 노출합니다.
 - **Prometheus**: Actuator가 노출한 메트릭을 주기적으로 수집(pull)하고 시계열 데이터로 저장합니다.
 - **Grafana**: Prometheus가 수집한 데이터를 시각화하여 대시보드를 통해 보여줍니다.
@@ -241,3 +243,9 @@ API 동작을 실행하려면 아래 명령어를 사용합니다.
 ### 5.5 Docker 컨테이너화
 
 - 다른 개발 환경에서도 문제 없이 실행될 수 있도록 docker compose 를 활용해 컨테이너화를 적용했습니다.
+
+### 5.6. 예외 처리
+
+- `GlobalExceptionHandler`를 통해 특정 exception이 발생했을 때 해당 상황에 맞는 정보를 클라이언트에 전달하도록 구성했습니다.
+- CustomException
+- ExceptionCode
