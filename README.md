@@ -248,4 +248,4 @@ chmod +x ./gradlew
 
 - `GlobalExceptionHandler`를 통해 특정 exception이 발생했을 때 해당 상황에 맞는 정보를 클라이언트에 전달하도록 구성했습니다.
 - `CustomException` : 특정 exception 코드와 오류가 발생한 ENC값을 가지는 객체입니다.
-- ExceptionCode
+- `ExceptionCode` : 시스템에서 발생할 수 있는 예외 목록을 모아놓은 enum 클래스입니다.
