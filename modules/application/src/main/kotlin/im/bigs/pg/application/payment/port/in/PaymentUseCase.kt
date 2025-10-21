@@ -17,4 +17,5 @@ interface PaymentUseCase {
      * @throws IllegalStateException PG 클라이언트 또는 정책 조회 실패 등 환경 오류
      */
     fun pay(command: PaymentCommand): Payment
+    fun buy(command: BuyCommand): Payment
 }

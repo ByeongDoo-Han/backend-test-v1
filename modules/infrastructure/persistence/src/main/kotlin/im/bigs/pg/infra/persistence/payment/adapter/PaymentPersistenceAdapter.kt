@@ -9,9 +9,10 @@ import im.bigs.pg.domain.payment.Payment
 import im.bigs.pg.domain.payment.PaymentStatus
 import im.bigs.pg.infra.persistence.payment.entity.PaymentEntity
 import im.bigs.pg.infra.persistence.payment.repository.PaymentJpaRepository
-import java.time.ZoneOffset
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /** PaymentOutPort 구현체(JPA 기반). */
 @Component
@@ -36,11 +37,17 @@ class PaymentPersistenceAdapter(
         val hasNext = list.size > pageSize
         val items = list.take(pageSize)
         val last = items.lastOrNull()
+        val nextCursorCreatedAt = if (hasNext) {
+            last?.createdAt.let { LocalDateTime.ofInstant(it, ZoneOffset.UTC) }
+        } else null
+        val nextCursorId = if (hasNext) {
+            last?.id
+        } else null
         return PaymentPage(
             items = items.map { it.toDomain() },
             hasNext = hasNext,
-            nextCursorCreatedAt = last?.createdAt?.let { java.time.LocalDateTime.ofInstant(it, ZoneOffset.UTC) },
-            nextCursorId = last?.id,
+            nextCursorCreatedAt = nextCursorCreatedAt,
+            nextCursorId = nextCursorId
         )
     }
 

@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.4.4" apply false
+    id("org.springframework.boot") version "3.2.7" apply false
     id("io.spring.dependency-management") version "1.1.7" apply false
     kotlin("plugin.jpa") version "1.9.25"
     kotlin("kapt") version "1.9.25"
@@ -16,7 +16,7 @@ allprojects {
     group = "kr.thedream"
     version = "0.0.1-SNAPSHOT"
 
-    java { toolchain { languageVersion = JavaLanguageVersion.of(22) } }
+    java { toolchain { JavaLanguageVersion.of(22) } }
 
     kotlin {
         compilerOptions {
@@ -28,11 +28,16 @@ allprojects {
     }
 
     // Java 컴파일러도 release 21로 정렬하여 Kotlin과 타겟 일치
-    tasks.withType<JavaCompile>().configureEach { options.release.set(21) }
+    tasks.withType<JavaCompile>().configureEach {
+        options.release.set(21)
+    }
 
     dependencies {
         // kotlin
         implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+        // jasypt
+        implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
 
         // jackson
         implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
@@ -91,6 +96,7 @@ project(":modules:infrastructure") {
         apply(plugin = "org.springframework.boot")
         apply(plugin = "io.spring.dependency-management")
         apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+        apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
     }
 }
 
