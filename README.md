@@ -224,7 +224,6 @@ API 동작을 실행하려면 아래 명령어를 사용합니다.
 
 ### 5.2. Prometheus & Grafana
 
-- 
 - **Spring Boot Actuator**: 백엔드 애플리케이션의 다양한 메트릭(JVM, CPU, HTTP 요청 등)을 외부에 노출합니다.
 - **Prometheus**: Actuator가 노출한 메트릭을 주기적으로 수집(pull)하고 시계열 데이터로 저장합니다.
 - **Grafana**: Prometheus가 수집한 데이터를 시각화하여 대시보드를 통해 보여줍니다.
