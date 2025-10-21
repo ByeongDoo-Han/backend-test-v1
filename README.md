@@ -11,6 +11,7 @@
 - **infrastructure**: 데이터베이스 연동 등 내부 시스템과 관련된 기술(Inbound/Outbound Adapter)을 구현합니다.
 - **external**: 외부 PG사 API 연동 등 외부 시스템과 관련된 기술을 구현합니다.
 
+- 아래 링크는 프로젝트 실행 후 접속 가능합니다.
 **Swagger** : [link](http://localhost:8080/swagger-ui/index.html)
 
 **Frontend** : [link](http://localhost:3000/)
