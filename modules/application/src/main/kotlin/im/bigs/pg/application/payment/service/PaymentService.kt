@@ -107,7 +107,7 @@ class PaymentService(
             appliedFeeRate = feePolicyRate,
             feeAmount = fee,
             netAmount = net,
-            cardBin = command.cardNumber.take(4) + command.cardNumber.substring(5, 9),
+            cardBin = command.cardNumber.take(4) + command.cardNumber.substring(5, 7),
             cardLast4 = command.cardNumber.substring(15, command.cardNumber.length),
             approvalCode = approve.approvalCode,
             approvedAt = approve.approvedAt,
