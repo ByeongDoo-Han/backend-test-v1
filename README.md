@@ -244,6 +244,7 @@ chmod +x ./gradlew
 ### 5.5 Docker 컨테이너화
 
 - 다른 개발 환경에서도 문제 없이 실행될 수 있도록 docker compose 를 활용해 컨테이너화를 적용했습니다.
+- docker 구동 시 table, index 생성 sql이 적용되도록 설정했습니다.
 
 ### 5.6. 예외 처리
 
