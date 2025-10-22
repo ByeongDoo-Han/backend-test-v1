@@ -26,6 +26,12 @@ class PaymentService(
     private val paymentRepository: PaymentOutPort,
     private val pgClients: List<PgClientOutPort>,
 ) : PaymentUseCase {
+    companion object{
+        private const val CARD_NUMBER_FOR_TEST = "1111-1111-1111-1111"
+        private const val BIRTHDATE = "19900101"
+        private const val EXPIRY = "1227"
+        private const val PASSWORD = "12"
+    }
     /**
      * 결제 승인/수수료 계산/저장을 순차적으로 수행합니다.
      * - 현재 예시 구현은 하드코드된 수수료(3% + 100)로 계산합니다.
@@ -48,10 +54,10 @@ class PaymentService(
 
         // pg api 테스트용 카드 정보
         val approveCommand = PgApproveRequest(
-            cardNumber = "1111-1111-1111-1111",
-            birthDate = "19900101",
-            expiry = "1227",
-            password = "12",
+            cardNumber = CARD_NUMBER_FOR_TEST,
+            birthDate = BIRTHDATE,
+            expiry = EXPIRY,
+            password = PASSWORD,
             amount = command.amount
         )
 
@@ -107,8 +113,8 @@ class PaymentService(
             appliedFeeRate = feePolicyRate,
             feeAmount = fee,
             netAmount = net,
-            cardBin = command.cardNumber.take(4) + command.cardNumber.substring(5, 7),
-            cardLast4 = command.cardNumber.substring(15, command.cardNumber.length),
+            cardBin = command.getCardBin(),
+            cardLast4 = command.getCardLast4(),
             approvalCode = approve.approvalCode,
             approvedAt = approve.approvedAt,
             status = PaymentStatus.APPROVED,

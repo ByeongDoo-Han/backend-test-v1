@@ -13,6 +13,7 @@ import im.bigs.pg.external.exception.CustomException
 import im.bigs.pg.external.exception.ExceptionCode
 import im.bigs.pg.external.exception.TestPgException
 import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
@@ -24,7 +25,9 @@ class TestPgClient(
 ) : PgClientOutPort {
     companion object {
         private const val API_KEY = "11111111-1111-4111-8111-111111111111"
+        private const val API_KEY_HEADER = "API-KEY"
         private const val IV = "AAAAAAAAAAAAAAAA"
+        private const val TEST_PG_API_URI = "/api/v1/pay/credit-card"
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -44,8 +47,8 @@ class TestPgClient(
             enc = enc
         )
         val approveResult = testPgApiWebClient.post()
-            .uri("/api/v1/pay/credit-card")
-            .header("API-KEY", API_KEY)
+            .uri(TEST_PG_API_URI)
+            .header(API_KEY_HEADER, API_KEY)
             .bodyValue(encRequestDto)
             .retrieve()
             .onStatus({ status -> status.isError }) { clientResponse ->

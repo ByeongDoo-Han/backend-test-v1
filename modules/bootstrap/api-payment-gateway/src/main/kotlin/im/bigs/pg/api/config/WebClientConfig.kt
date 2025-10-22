@@ -12,6 +12,11 @@ import java.util.concurrent.TimeUnit
 
 @Configuration
 class WebClientConfig {
+    companion object{
+        private const val TEST_PG_API_URL = "https://api-test-pg.bigs.im"
+        private const val CONTENT_TYPE = "Content-Type"
+        private const val APPLICATION_JSON = "application/json"
+    }
 
     @Bean
     fun testPgApiWebClient(builder: WebClient.Builder): WebClient {
@@ -22,9 +27,9 @@ class WebClientConfig {
                 conn.addHandlerLast(WriteTimeoutHandler(500, TimeUnit.MILLISECONDS))
             }
         return builder
-            .baseUrl("https://api-test-pg.bigs.im")
+            .baseUrl(TEST_PG_API_URL)
             .clientConnector(ReactorClientHttpConnector(httpClient))
-            .defaultHeader("Content-Type", "application/json")
+            .defaultHeader(CONTENT_TYPE, APPLICATION_JSON)
             .build()
     }
 }
