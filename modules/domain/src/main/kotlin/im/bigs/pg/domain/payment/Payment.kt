@@ -57,7 +57,6 @@ enum class PaymentStatus(val value: String) {
 }
 
 /** 조회 API의 통계 응답에 사용되는 값 모음. */
-/** 조회 API의 통계 응답에 사용되는 값 모음. */
 data class PaymentSummary(
     val count: Long,
     val totalAmount: BigDecimal,
