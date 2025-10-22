@@ -5,7 +5,6 @@ import im.bigs.pg.infra.persistence.config.JpaConfig
 import im.bigs.pg.infra.persistence.payment.adapter.PaymentPersistenceAdapter
 import im.bigs.pg.infra.persistence.payment.entity.PaymentEntity
 import im.bigs.pg.infra.persistence.payment.repository.PaymentJpaRepository
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest

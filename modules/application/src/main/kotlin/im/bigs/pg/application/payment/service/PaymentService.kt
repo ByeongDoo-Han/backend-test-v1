@@ -26,7 +26,7 @@ class PaymentService(
     private val paymentRepository: PaymentOutPort,
     private val pgClients: List<PgClientOutPort>,
 ) : PaymentUseCase {
-    companion object{
+    companion object {
         private const val CARD_NUMBER_FOR_TEST = "1111-1111-1111-1111"
         private const val BIRTHDATE = "19900101"
         private const val EXPIRY = "1227"

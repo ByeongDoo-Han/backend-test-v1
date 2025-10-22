@@ -1,6 +1,5 @@
 package im.bigs.pg.domain.calculation
 
-import org.junit.jupiter.api.DisplayName
 import java.math.BigDecimal
 import kotlin.test.Test
 import kotlin.test.assertEquals

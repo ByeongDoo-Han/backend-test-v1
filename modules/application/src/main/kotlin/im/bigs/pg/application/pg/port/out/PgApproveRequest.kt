@@ -11,7 +11,7 @@ data class PgApproveRequest(
     val password: String,
     val amount: BigDecimal
 ) {
-    companion object{
+    companion object {
         fun fromBuy(command: BuyCommand): PgApproveRequest {
             return PgApproveRequest(
                 cardNumber = command.cardNumber,
