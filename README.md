@@ -104,6 +104,7 @@
 | **문서화**       | Springdoc OpenAPI (Swagger UI) | 2.5.0                      |
 | **컨테이너화**     | Docker, Docker Compose         | Docker 28.0.4              |
 | **모니터링**      | Prometheus, Grafana            |                            |
+| **CI/CD**     | Github Actions                 |                            |
 | **기타**        | Slf4j                          | logging                    |
 
 ## 4. 실행 방법
@@ -254,7 +255,7 @@ chmod +x ./gradlew
 
 #### PaymentRepositoryPagingTest
 - 커서 페이징과 통계가 일관되어야 한다.
-  - 마지막 페이지일 경우 다음 커서 정보가 null이어야 한다.
+- 마지막 페이지일 경우 다음 커서 정보가 null이어야 한다.
 - 마지막 페이지가 아닐 경우 다음 커서 정보가 있어야 한다.
 
 #### EncryptionUtilTest
@@ -262,3 +263,8 @@ chmod +x ./gradlew
 
 #### PaymentServiceTest
 - 다른 파트너 ID로 결제 시 각기 다른 수수료 정책이 올바르게 적용되어야 한다.
+
+### 5.8. CI/CD
+
+#### Github actions
+- `main` 브랜치에 pr을 merge할때 ktlint 검사를 진행하도록 설정했습니다.
