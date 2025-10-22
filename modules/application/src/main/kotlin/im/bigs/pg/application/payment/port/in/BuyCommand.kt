@@ -10,12 +10,12 @@ data class BuyCommand(
     val amount: BigDecimal,
     val productName: String?,
     val partnerId: Long
-){
-    fun getCardBin(): String{
-        return cardNumber.take(4)+cardNumber.substring(5, 7)
+) {
+    fun getCardBin(): String {
+        return cardNumber.take(4) + cardNumber.substring(5, 7)
     }
 
-    fun getCardLast4(): String{
+    fun getCardLast4(): String {
         return cardNumber.substring(15, cardNumber.length)
     }
 }

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 @Configuration
 class WebClientConfig {
-    companion object{
+    companion object {
         private const val TEST_PG_API_URL = "https://api-test-pg.bigs.im"
         private const val CONTENT_TYPE = "Content-Type"
         private const val APPLICATION_JSON = "application/json"
