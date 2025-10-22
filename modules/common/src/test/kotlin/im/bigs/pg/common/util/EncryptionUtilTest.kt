@@ -14,8 +14,7 @@ class EncryptionUtilTest {
     private val objectMapper = jacksonObjectMapper()
 
     @Test
-    @DisplayName("암호화된 데이터는 동일한 키와 IV로 복호화했을 때 원본과 일치해야 한다")
-    fun `암복호화 무결성 테스트`() {
+    fun `암호화된 데이터는 동일한 키와 IV로 복호화했을 때 원본과 일치해야 한다`() {
         // given
         val originalCardInfo = CardInfo(
             cardNumber = "1111-2222-3333-4444",

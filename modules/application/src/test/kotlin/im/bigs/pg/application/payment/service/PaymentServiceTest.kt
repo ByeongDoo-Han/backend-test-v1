@@ -33,7 +33,6 @@ class PaymentServiceTest {
     }
 
     @Test
-    @DisplayName("결제 시 수수료 정책을 적용하고 저장해야 한다")
     fun `결제 시 수수료 정책을 적용하고 저장해야 한다`() {
         val service = PaymentService(partnerRepo, feeRepo, paymentRepo, listOf(pgClient))
         every { partnerRepo.findById(1L) } returns Partner(1L, "TEST", "Test", true)
@@ -54,7 +53,6 @@ class PaymentServiceTest {
     }
 
     @Test
-    @DisplayName("다른 파트너 ID로 결제 시 각기 다른 수수료 정책이 올바르게 적용되어야 한다")
     fun `다른 파트너 ID로 결제 시 각기 다른 수수료 정책이 올바르게 적용되어야 한다`() {
         // given
         val service = PaymentService(partnerRepo, feeRepo, paymentRepo, listOf(pgClient))

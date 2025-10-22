@@ -24,7 +24,6 @@ class PaymentRepositoryPagingTest @Autowired constructor(
     val adapter = PaymentPersistenceAdapter(paymentRepo)
 
     @Test
-    @DisplayName("커서 페이징과 통계가 일관되어야 한다")
     fun `커서 페이징과 통계가 일관되어야 한다`() {
         val baseTs = Instant.parse("2024-01-01T00:00:00Z")
         repeat(35) { i ->
@@ -63,7 +62,6 @@ class PaymentRepositoryPagingTest @Autowired constructor(
     }
 
     @Test
-    @DisplayName("마지막 페이지일 경우 다음 커서 정보가 null이어야 한다")
     fun `마지막 페이지일 경우 다음 커서 정보가 null이어야 한다`() {
         // given
         val baseTs = Instant.parse("2024-01-01T00:00:00Z")
@@ -98,7 +96,6 @@ class PaymentRepositoryPagingTest @Autowired constructor(
     }
 
     @Test
-    @DisplayName("마지막 페이지가 아닐 경우 다음 커서 정보가 있어야 한다")
     fun `마지막 페이지가 아닐 경우 다음 커서 정보가 있어야 한다`() {
         // given
         val baseTs = Instant.parse("2024-01-01T00:00:00Z")

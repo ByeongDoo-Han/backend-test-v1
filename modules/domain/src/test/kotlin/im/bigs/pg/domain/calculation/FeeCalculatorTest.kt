@@ -7,7 +7,6 @@ import kotlin.test.assertEquals
 
 class FeeCalculatorTest {
     @Test
-    @DisplayName("퍼센트 수수료만 적용 시 반올림 및 정산금이 정확해야 한다")
     fun `퍼센트 수수료만 적용 시 반올림 및 정산금이 정확해야 한다`() {
         val amount = BigDecimal("10000")
         val rate = BigDecimal("0.0235")
@@ -17,7 +16,6 @@ class FeeCalculatorTest {
     }
 
     @Test
-    @DisplayName("퍼센트+정액 수수료가 함께 적용되어야 한다")
     fun `퍼센트와 정액 수수료가 함께 적용되어야 한다`() {
         val amount = BigDecimal("10000")
         val rate = BigDecimal("0.0300")
