@@ -1,0 +1,40 @@
+name: Ktlint Format Check # 워크플로우 이름
+on:
+  pull_request:
+    branches:
+      - main # main 브랜치로 PR이 생성될 때 이 워크플로우를 실행
+  push:
+    branches:
+      - main # main 브랜치에 코드가 푸시될 때 (최종 확인용) 이 워크플로우를 실행
+
+jobs:
+  ktlint-check:
+    runs-on: ubuntu-latest # 워크플로우를 실행할 환경 (Ubuntu 최신 버전)
+
+    steps:
+      - name: Checkout code # GitHub 저장소 코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 21 # Java Development Kit (JDK) 17 설정
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin' # Adoptium Temurin 배포판 사용
+
+      - name: Grant execute permission for gradlew # gradlew 스크립트에 실행 권한 부여
+        run: chmod +x gradlew
+
+      - name: Run ktlintFormat and check for changes # ktlintFormat 실행 및 변경사항 확인
+        run: |
+          echo "Running ktlintFormat..."
+          ./gradlew ktlintFormat
+    
+          echo "Checking for uncommitted changes after ktlintFormat..."
+          # ktlintFormat 실행 후 Git 저장소에 변경사항이 있는지 확인합니다.
+          # 만약 변경사항이 있다면, 개발자가 로컬에서 ktlintFormat을 실행하지 않았다는 의미이므로
+          # 빌드를 실패시켜 PR 병합을 막습니다.
+          if ! git diff --exit-code; then
+            echo "ERROR: ktlintFormat made changes. Please run './gradlew ktlintFormat' locally and commit the changes."
+            exit 1
+          fi
+          echo "ktlintFormat check passed. No uncommitted changes found."
