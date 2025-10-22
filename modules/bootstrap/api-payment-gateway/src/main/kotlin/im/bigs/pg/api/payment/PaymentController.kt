@@ -36,7 +36,7 @@ class PaymentController(
 ) : PaymentApiDocs {
 
     @PostMapping("/buy")
-    fun buy(@RequestBody request: CreateBuyRequest): ResponseEntity<PaymentResponse> {
+    override fun buy(@RequestBody request: CreateBuyRequest): ResponseEntity<PaymentResponse> {
         return ResponseEntity.ok(
             PaymentResponse.from(
                 paymentUseCase.buy(

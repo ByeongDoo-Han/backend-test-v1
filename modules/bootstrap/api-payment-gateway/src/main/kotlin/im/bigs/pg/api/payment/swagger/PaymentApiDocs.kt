@@ -1,9 +1,10 @@
 package im.bigs.pg.api.payment.swagger
 
+import im.bigs.pg.api.payment.dto.CreateBuyRequest
 import im.bigs.pg.api.payment.dto.CreatePaymentRequest
 import im.bigs.pg.api.payment.dto.PaymentResponse
 import im.bigs.pg.api.payment.dto.QueryResponse
-import im.bigs.pg.external.exception.ApiExceptionResponse
+import im.bigs.pg.external.dto.TestPgExceptionResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -39,7 +40,19 @@ interface PaymentApiDocs {
                 content = [
                     Content(
                         mediaType = "application/json",
-                        schema = Schema(implementation = ApiExceptionResponse::class)
+                        schema = Schema(implementation = TestPgExceptionResponse::class),
+                        examples = [
+                            ExampleObject(
+                                value = """
+                                    {
+                                        "code":1001,
+                                        "errorCode":"STOLEN_OR_LOST",
+                                        "message":"도난 또는 분실된 카드입니다.",
+                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438",
+                                    }
+                                """
+                            )
+                        ],
                     )
                 ]
             ), ApiResponse(
@@ -65,6 +78,7 @@ interface PaymentApiDocs {
                 content = [
                     Content(
                         mediaType = "application/json",
+                        schema = Schema(implementation = TestPgExceptionResponse::class),
                         examples = [
                             ExampleObject(
                                 name = "STOLEN_OR_LOST", summary = "도난 또는 분실된 카드입니다.",
@@ -106,7 +120,7 @@ interface PaymentApiDocs {
                                         "code":1004,
                                         "errorCode":"TAMPERED_CARD",
                                         "message":"위조 또는 변조된 카드입니다.",
-                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438",
+                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438"
                                     }
                                 """
                             ),
@@ -117,7 +131,7 @@ interface PaymentApiDocs {
                                         "code":1005,
                                         "errorCode":"TAMPERED_CARD",
                                         "message":"위조 또는 변조된 카드입니다. (허용되지 않은 카드)",
-                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438",
+                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438"
                                     }
                                 """
                             ),
@@ -150,4 +164,29 @@ interface PaymentApiDocs {
         @Parameter(description = "다음 페이지 조회를 위한 커서") @RequestParam(required = false) cursor: String?,
         @Parameter(description = "한 페이지에 보여줄 항목 수") @RequestParam(defaultValue = "20") limit: Int,
     ): ResponseEntity<QueryResponse>
+
+    @Operation(summary = "구매 요청 (테스트)", description = "카드 정보를 입력해 결제 요청 결과를 테스트합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200", description = "구매 요청 성공",
+                content = [
+                    Content(
+                        mediaType = "application/json", schema = Schema(implementation = PaymentResponse::class)
+                    )
+                ]
+            ),
+            ApiResponse(
+                responseCode = "400", description = "구매 요청 실패",
+                content = [
+                    Content(
+                        mediaType = "application/json", schema = Schema(implementation = TestPgExceptionResponse::class)
+                    )
+                ]
+            )
+        ]
+    )
+    fun buy(
+        @RequestBody request: CreateBuyRequest
+    ): ResponseEntity<PaymentResponse>
 }
