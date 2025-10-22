@@ -70,7 +70,7 @@ class PaymentService(
         val feePolicyFixed = feePolicy?.fixedFee
         val (fee, net) = FeeCalculator.calculateFee(command.amount, feePolicyRate, feePolicyFixed)
         val payment = Payment(
-            partnerId = partner.id,
+            partnerId = command.partnerId,
             amount = command.amount,
             appliedFeeRate = feePolicyRate,
             feeAmount = fee,
@@ -94,13 +94,8 @@ class PaymentService(
         val pgClient = pgClients.firstOrNull { it.supports(partner.id) }
             ?: throw IllegalStateException("No PG client for partner ${partner.id}")
 
-        val approveCommand = PgApproveRequest(
-            cardNumber = command.cardNumber,
-            birthDate = command.birthDate,
-            expiry = command.expiry,
-            password = command.password,
-            amount = command.amount
-        )
+        val approveCommand = PgApproveRequest.fromBuy(command)
+
         val approve = pgClient.approve(approveCommand)
 
         val feePolicy = feePolicyRepository.findEffectivePolicy(partner.id)
