@@ -249,3 +249,16 @@ chmod +x ./gradlew
 - `GlobalExceptionHandler`를 통해 특정 exception이 발생했을 때 해당 상황에 맞는 정보를 클라이언트에 전달하도록 구성했습니다.
 - `CustomException` : 특정 exception 코드와 오류가 발생한 ENC값을 가지는 객체입니다.
 - `ExceptionCode` : 시스템에서 발생할 수 있는 예외 목록을 모아놓은 enum 클래스입니다.
+
+### 5.7. 추가한 테스트
+
+#### PaymentRepositoryPagingTest
+- 커서 페이징과 통계가 일관되어야 한다
+- 마지막 페이지일 경우 다음 커서 정보가 null이어야 한다
+- 마지막 페이지가 아닐 경우 다음 커서 정보가 있어야 한다
+
+#### EncryptionUtilTest
+- 암호화된 데이터는 동일한 키와 IV로 복호화했을 때 원본과 일치해야 한다
+
+#### PaymentServiceTest
+- 다른 파트너 ID로 결제 시 각기 다른 수수료 정책이 올바르게 적용되어야 한다
