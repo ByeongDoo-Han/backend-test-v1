@@ -265,7 +265,7 @@ chmod +x ./gradlew
 #### PaymentServiceTest
 - 다른 파트너 ID로 결제 시 각기 다른 수수료 정책이 올바르게 적용되어야 한다.
 
-### 5.8. CI/CD
+### 5.8. CI
 
 #### Github actions
 - `main` 브랜치에 pr을 merge할때 ktlint 검사를 진행하도록 설정했습니다.
