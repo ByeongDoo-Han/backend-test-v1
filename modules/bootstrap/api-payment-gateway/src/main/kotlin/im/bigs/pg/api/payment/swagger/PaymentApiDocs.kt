@@ -117,7 +117,7 @@ interface PaymentApiDocs {
                                 """
                             ),
                             ExampleObject(
-                                name = "TAMPERED_CARD", summary = "위조 또는 변조된 카드입니다. (허용되지 않은 카드)",
+                                name = "TAMPERED_CARD2", summary = "위조 또는 변조된 카드입니다. (허용되지 않은 카드)",
                                 value = """
                                     {
                                         "code":1005,
