@@ -12,6 +12,7 @@ import im.bigs.pg.domain.calculation.FeeCalculator
 import im.bigs.pg.domain.payment.Payment
 import im.bigs.pg.domain.payment.PaymentStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
 /**
@@ -44,6 +45,7 @@ class PaymentService(
      * @throws IllegalArgumentException 요청한 파트너 id에 해당하는 pg id 없음
      * @return pgClient 결제 승인 및 수수료 계산 후 생성된 결제 객체를 반환
      */
+    @Transactional
     override fun pay(command: PaymentCommand): Payment {
         val partner = partnerRepository.findById(command.partnerId)
             ?: throw IllegalArgumentException("Partner not found: ${command.partnerId}")
@@ -86,6 +88,7 @@ class PaymentService(
         return paymentRepository.save(payment)
     }
 
+    @Transactional
     override fun buy(command: BuyCommand): Payment {
         val partner = partnerRepository.findById(command.partnerId)
             ?: throw IllegalArgumentException("Partner not found: ${command.partnerId}")

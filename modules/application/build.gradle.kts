@@ -12,5 +12,6 @@ dependencies {
     implementation("org.springframework:spring-context")
     // mysql
     runtimeOnly("mysql:mysql-connector-java:8.0.33")
+    implementation("org.springframework:spring-tx:6.2.10")
     testRuntimeOnly("mysql:mysql-connector-java:8.0.33")
 }
