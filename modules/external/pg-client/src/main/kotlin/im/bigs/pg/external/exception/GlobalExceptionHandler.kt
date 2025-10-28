@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import java.time.LocalDateTime
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -17,7 +18,8 @@ class GlobalExceptionHandler {
             code = ex.errorResult.code,
             errorCode = ex.errorResult.errorCode,
             message = ex.errorResult.message,
-            referenceId = ex.errorResult.referenceId
+            referenceId = ex.errorResult.referenceId,
+            exceptionTime = LocalDateTime.now()
         )
 
         return ResponseEntity
@@ -32,7 +34,8 @@ class GlobalExceptionHandler {
             code = ex.exceptionCode.httpStatus?.value(),
             errorCode = ex.exceptionCode.code,
             message = ex.exceptionCode.message,
-            referenceId = ex.enc
+            referenceId = ex.enc,
+            exceptionTime = LocalDateTime.now()
         )
 
         return ResponseEntity

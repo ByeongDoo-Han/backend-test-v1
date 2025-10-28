@@ -4,7 +4,7 @@ import im.bigs.pg.api.payment.dto.CreateBuyRequest
 import im.bigs.pg.api.payment.dto.CreatePaymentRequest
 import im.bigs.pg.api.payment.dto.PaymentResponse
 import im.bigs.pg.api.payment.dto.QueryResponse
-import im.bigs.pg.external.dto.TestPgExceptionResponse
+import im.bigs.pg.external.exception.ApiExceptionResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -40,19 +40,7 @@ interface PaymentApiDocs {
                 content = [
                     Content(
                         mediaType = "application/json",
-                        schema = Schema(implementation = TestPgExceptionResponse::class),
-                        examples = [
-                            ExampleObject(
-                                value = """
-                                    {
-                                        "code":1001,
-                                        "errorCode":"STOLEN_OR_LOST",
-                                        "message":"도난 또는 분실된 카드입니다.",
-                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438",
-                                    }
-                                """
-                            )
-                        ],
+                        schema = Schema(implementation = ApiExceptionResponse::class),
                     )
                 ]
             ), ApiResponse(
@@ -78,7 +66,7 @@ interface PaymentApiDocs {
                 content = [
                     Content(
                         mediaType = "application/json",
-                        schema = Schema(implementation = TestPgExceptionResponse::class),
+                        schema = Schema(implementation = ApiExceptionResponse::class),
                         examples = [
                             ExampleObject(
                                 name = "STOLEN_OR_LOST", summary = "도난 또는 분실된 카드입니다.",
@@ -88,6 +76,7 @@ interface PaymentApiDocs {
                                         "errorCode":"STOLEN_OR_LOST",
                                         "message":"도난 또는 분실된 카드입니다.",
                                         "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438",
+                                        "exceptionTime": "2025-10-28T07:15:14.707Z"
                                     }
                                 """
                             ),
@@ -99,6 +88,7 @@ interface PaymentApiDocs {
                                         "errorCode":"STOLEN_OR_LOST",
                                         "message":"한도가 초과되었습니다.",
                                         "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438",
+                                        "exceptionTime": "2025-10-28T07:15:14.707Z"
                                     }
                                 """
                             ),
@@ -110,6 +100,7 @@ interface PaymentApiDocs {
                                         "errorCode":"EXPIRED_OR_BLOCKED",
                                         "message":"정지되었거나 만료된 카드입니다.",
                                         "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438",
+                                        "exceptionTime": "2025-10-28T07:15:14.707Z"
                                     }
                                 """
                             ),
@@ -120,7 +111,8 @@ interface PaymentApiDocs {
                                         "code":1004,
                                         "errorCode":"TAMPERED_CARD",
                                         "message":"위조 또는 변조된 카드입니다.",
-                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438"
+                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438",
+                                        "exceptionTime": "2025-10-28T07:15:14.707Z"
                                     }
                                 """
                             ),
@@ -131,10 +123,11 @@ interface PaymentApiDocs {
                                         "code":1005,
                                         "errorCode":"TAMPERED_CARD",
                                         "message":"위조 또는 변조된 카드입니다. (허용되지 않은 카드)",
-                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438"
+                                        "referenceId":"b48c79bd-e1b3-416a-a583-efe90d1ee438",
+                                        "exceptionTime": "2025-10-28T07:15:14.707Z"
                                     }
                                 """
-                            ),
+                            )
                         ]
                     )
                 ]
@@ -180,7 +173,8 @@ interface PaymentApiDocs {
                 responseCode = "400", description = "구매 요청 실패",
                 content = [
                     Content(
-                        mediaType = "application/json", schema = Schema(implementation = TestPgExceptionResponse::class)
+                        mediaType = "application/json",
+                        schema = Schema(implementation = ApiExceptionResponse::class)
                     )
                 ]
             )
