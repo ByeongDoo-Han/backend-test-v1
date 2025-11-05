@@ -1,9 +1,6 @@
 name: Ktlint Format Check # 워크플로우 이름
 on:
-  pull_request:
-    branches: ["main"]
-  push:
-    branches: ["main"]
+  [ push, pull_request ]
 
 jobs:
   ktlint-check:
