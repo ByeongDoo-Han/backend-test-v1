@@ -11,6 +11,10 @@ import im.bigs.pg.application.payment.port.`in`.PaymentCommand
 import im.bigs.pg.application.payment.port.`in`.PaymentUseCase
 import im.bigs.pg.application.payment.port.`in`.QueryFilter
 import im.bigs.pg.application.payment.port.`in`.QueryPaymentsUseCase
+import im.bigs.pg.application.pg.port.out.PgApproveRequest
+import im.bigs.pg.external.exception.CustomException
+import im.bigs.pg.external.exception.ExceptionCode
+import org.slf4j.LoggerFactory
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -33,7 +37,9 @@ import java.time.LocalDateTime
 class PaymentController(
     private val paymentUseCase: PaymentUseCase,
     private val queryPaymentsUseCase: QueryPaymentsUseCase,
+
 ) : PaymentApiDocs {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @PostMapping("/buy")
     override fun buy(@RequestBody request: CreateBuyRequest): ResponseEntity<PaymentResponse> {
@@ -51,6 +57,36 @@ class PaymentController(
                     )
                 )
             )
+        )
+    }
+
+    @PostMapping("/async")
+    override fun asyncBuy(@RequestBody request: CreateBuyRequest): ResponseEntity<String> {
+        val buyCommand = BuyCommand(
+            cardNumber = request.cardNumber,
+            birthDate = request.birthDate,
+            expiry = request.expiry,
+            password = request.password,
+            amount = request.amount,
+            productName = request.productName,
+            partnerId = request.partnerId,
+
+        )
+        val result = paymentUseCase.asyncCreate(buyCommand)
+            .thenComposeAsync {
+//                createdPayment -> //payment
+                paymentUseCase.asyncApprove(request.partnerId, PgApproveRequest.fromBuy(buyCommand))
+            }.thenAcceptAsync { approvedPayment ->
+                paymentUseCase.asyncUpdatePayment(buyCommand, approvedPayment)
+            }.whenComplete { _, exception ->
+                if (exception != null) {
+                    CustomException(ExceptionCode.NO_RESPONSE_FROM_PG, "::is enc::")
+                } else {
+                    println("비동기 성공")
+                }
+            }
+        return ResponseEntity.ok(
+            "성공"
         )
     }
 
@@ -109,5 +145,24 @@ class PaymentController(
                 hasNext = res.hasNext,
             ),
         )
+    }
+
+    @PostMapping("/test")
+    fun asyncTest(@RequestBody request: CreateBuyRequest): ResponseEntity<Any?> {
+        val buyCommand = BuyCommand(
+            cardNumber = request.cardNumber,
+            birthDate = request.birthDate,
+            expiry = request.expiry,
+            password = request.password,
+            amount = request.amount,
+            productName = request.productName,
+            partnerId = request.partnerId
+        )
+
+        val result = paymentUseCase.asyncTest(
+            buyCommand
+        )
+
+        return ResponseEntity.ok(result)
     }
 }

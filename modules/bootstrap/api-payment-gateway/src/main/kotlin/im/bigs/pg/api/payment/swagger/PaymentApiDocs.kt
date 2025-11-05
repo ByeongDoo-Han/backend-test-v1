@@ -183,4 +183,6 @@ interface PaymentApiDocs {
     fun buy(
         @RequestBody request: CreateBuyRequest
     ): ResponseEntity<PaymentResponse>
+
+    fun asyncBuy(@RequestBody request: CreateBuyRequest): ResponseEntity<String>
 }

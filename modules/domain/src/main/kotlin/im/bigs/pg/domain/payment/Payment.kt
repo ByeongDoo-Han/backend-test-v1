@@ -31,10 +31,10 @@ data class Payment(
     val netAmount: BigDecimal,
     val cardBin: String? = null,
     val cardLast4: String? = null,
-    val approvalCode: String,
+    var approvalCode: String? = null,
     @get:JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    val approvedAt: LocalDateTime,
-    val status: PaymentStatus,
+    var approvedAt: LocalDateTime? = LocalDateTime.now(),
+    var status: PaymentStatus,
     @get:JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     val createdAt: LocalDateTime = LocalDateTime.now(),
     @get:JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -45,8 +45,9 @@ data class Payment(
 /** 결제 상태.
  * - 승인(Approved), 취소(Canceled) 등 단순 상태를 표현합니다.
  */
-enum class PaymentStatus(val value: String) {
+enum class PaymentStatus(val value: String?) {
     APPROVED("APPROVED"),
+    PENDING("PENDING"),
     CANCELED("CANCELED");
 
     companion object {

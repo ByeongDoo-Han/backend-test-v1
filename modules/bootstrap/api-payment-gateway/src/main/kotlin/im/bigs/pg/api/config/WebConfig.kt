@@ -6,13 +6,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class WebConfig : WebMvcConfigurer {
-    override fun addCorsMappings(cors: CorsRegistry) {
-        cors.addMapping("/**")
-            .allowedOrigins(
-                "http://localhost:3000"
-            )
-            .allowedMethods("GET", "POST", "DELETE")
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/**")
+            .allowedOrigins("*")
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
-            .allowCredentials(true)
+            .maxAge(3600)
     }
 }

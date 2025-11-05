@@ -1,7 +1,10 @@
 package im.bigs.pg.infra.persistence.payment.entity
 
+import im.bigs.pg.domain.payment.PaymentStatus
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -32,12 +35,12 @@ class PaymentEntity(
     var cardBin: String? = null,
     @Column(length = 4)
     var cardLast4: String? = null,
-    @Column(nullable = false, length = 32)
-    var approvalCode: String,
-    @Column(nullable = false)
-    var approvedAt: Instant,
-    @Column(nullable = false, length = 20)
-    var status: String,
+    @Column(nullable = true, length = 32)
+    var approvalCode: String?,
+    @Column(nullable = true)
+    var approvedAt: Instant?,
+    @Enumerated(EnumType.STRING)
+    var status: PaymentStatus,
     @Column(nullable = false)
     var createdAt: Instant,
     @Column(nullable = false)

@@ -1,6 +1,9 @@
 package im.bigs.pg.application.payment.port.`in`
 
+import im.bigs.pg.application.pg.port.out.PgApproveRequest
+import im.bigs.pg.application.pg.port.out.PgApproveResult
 import im.bigs.pg.domain.payment.Payment
+import java.util.concurrent.CompletableFuture
 
 /**
  * 결제 생성 유스케이스(입력 포트).
@@ -18,4 +21,8 @@ interface PaymentUseCase {
      */
     fun pay(command: PaymentCommand): Payment
     fun buy(command: BuyCommand): Payment
+    fun asyncCreate(command: BuyCommand): CompletableFuture<Payment>
+    fun asyncApprove(partnerId: Long, command: PgApproveRequest): CompletableFuture<PgApproveResult>
+    fun asyncUpdatePayment(buyCommand: BuyCommand, approvedPayment: PgApproveResult): CompletableFuture<Payment>
+    fun asyncTest(paymentCommand: BuyCommand): Payment
 }

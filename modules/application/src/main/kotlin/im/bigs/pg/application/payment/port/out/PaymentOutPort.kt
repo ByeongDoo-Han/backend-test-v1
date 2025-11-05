@@ -12,4 +12,5 @@ interface PaymentOutPort {
     fun findBy(query: PaymentQuery): PaymentPage
 
     fun summary(filter: PaymentSummaryFilter): PaymentSummaryProjection
+    fun findById(id: Long?): Payment
 }

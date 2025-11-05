@@ -6,7 +6,6 @@ import im.bigs.pg.application.payment.port.out.PaymentQuery
 import im.bigs.pg.application.payment.port.out.PaymentSummaryFilter
 import im.bigs.pg.application.payment.port.out.PaymentSummaryProjection
 import im.bigs.pg.domain.payment.Payment
-import im.bigs.pg.domain.payment.PaymentStatus
 import im.bigs.pg.infra.persistence.payment.entity.PaymentEntity
 import im.bigs.pg.infra.persistence.payment.repository.PaymentJpaRepository
 import org.springframework.data.domain.PageRequest
@@ -65,6 +64,10 @@ class PaymentPersistenceAdapter(
         return PaymentSummaryProjection(cnt, totalAmount, totalNet)
     }
 
+    override fun findById(id: Long?): Payment {
+        return repo.findById(id!!).get().toDomain()
+    }
+
     /** 도메인 → 엔티티 매핑. */
     private fun Payment.toEntity() =
         PaymentEntity(
@@ -77,8 +80,8 @@ class PaymentPersistenceAdapter(
             cardBin = this.cardBin,
             cardLast4 = this.cardLast4,
             approvalCode = this.approvalCode,
-            approvedAt = this.approvedAt.toInstant(ZoneOffset.UTC),
-            status = this.status.name,
+            approvedAt = this.approvedAt?.toInstant(ZoneOffset.UTC),
+            status = this.status,
             createdAt = this.createdAt.toInstant(ZoneOffset.UTC),
             updatedAt = this.updatedAt.toInstant(ZoneOffset.UTC),
         )
@@ -96,7 +99,7 @@ class PaymentPersistenceAdapter(
             cardLast4 = this.cardLast4,
             approvalCode = this.approvalCode,
             approvedAt = java.time.LocalDateTime.ofInstant(this.approvedAt, ZoneOffset.UTC),
-            status = PaymentStatus.valueOf(this.status),
+            status = this.status,
             createdAt = java.time.LocalDateTime.ofInstant(this.createdAt, ZoneOffset.UTC),
             updatedAt = java.time.LocalDateTime.ofInstant(this.updatedAt, ZoneOffset.UTC),
         )

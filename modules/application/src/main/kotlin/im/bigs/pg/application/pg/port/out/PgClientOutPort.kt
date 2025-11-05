@@ -4,4 +4,5 @@ package im.bigs.pg.application.pg.port.out
 interface PgClientOutPort {
     fun supports(partnerId: Long): Boolean
     fun approve(request: PgApproveRequest): PgApproveResult
+    fun asyncApprove(request: PgApproveRequest): PgApproveResult?
 }

@@ -69,7 +69,7 @@ function App() {
 
 			// 실제로는 fetch('/api/payment', { method: 'POST', body: requestJson, ... }) 호출
 			const res = await fetch(
-				"http://localhost:8080/api/v1/payments/buy",
+				"http://localhost:8080/api/v1/payments/test",
 				{
 					method: "POST",
 					headers: {

@@ -7,7 +7,9 @@ tasks.bootJar {
 }
 
 dependencies {
+    implementation("org.slf4j:slf4j-api")
     implementation(projects.modules.domain)
+    implementation(projects.modules.common)
     // Only need Spring annotations (@Service) for this module
     implementation("org.springframework:spring-context")
     // mysql

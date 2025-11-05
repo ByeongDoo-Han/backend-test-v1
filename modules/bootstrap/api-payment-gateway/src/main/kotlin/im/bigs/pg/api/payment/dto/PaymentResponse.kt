@@ -24,12 +24,12 @@ data class PaymentResponse(
     @Schema(description = "카드 마지막 4자리", example = "1111")
     val cardLast4: String?,
     @Schema(description = "승인 코드", example = "APPROVAL-123")
-    val approvalCode: String,
+    val approvalCode: String?,
     @get:JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "승인 시각", example = "2025-10-18 14:30:00")
-    val approvedAt: LocalDateTime,
+    val approvedAt: LocalDateTime?,
     @Schema(description = "결제 상태", example = "APPROVED")
-    val status: PaymentStatus,
+    val status: PaymentStatus?,
     @get:JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "생성 시각", example = "2025-10-18 14:30:00")
     val createdAt: LocalDateTime,

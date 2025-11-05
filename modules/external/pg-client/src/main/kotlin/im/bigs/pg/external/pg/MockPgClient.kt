@@ -28,4 +28,8 @@ class MockPgClient : PgClientOutPort {
             status = PaymentStatus.APPROVED,
         )
     }
+
+    override fun asyncApprove(request: PgApproveRequest): PgApproveResult? {
+        TODO("Not yet implemented")
+    }
 }

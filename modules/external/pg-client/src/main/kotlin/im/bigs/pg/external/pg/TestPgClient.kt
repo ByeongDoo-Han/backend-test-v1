@@ -14,13 +14,18 @@ import im.bigs.pg.external.exception.ExceptionCode
 import im.bigs.pg.external.exception.TestPgException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpServerErrorException
+import org.springframework.web.client.RestClient
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 import java.time.Duration
+import java.time.LocalDateTime
 
 @Component
 class TestPgClient(
-    private val testPgApiWebClient: WebClient
+    private val testPgApiWebClient: WebClient,
+    private val testPgApiRestClient: RestClient
 ) : PgClientOutPort {
     companion object {
         private const val API_KEY = "11111111-1111-4111-8111-111111111111"
@@ -69,5 +74,37 @@ class TestPgClient(
             approvedAt = approveResult.approvedAt,
             status = if (approveResult.status == PaymentStatus.APPROVED.value) PaymentStatus.APPROVED else PaymentStatus.CANCELED
         )
+    }
+
+    override fun asyncApprove(request: PgApproveRequest): PgApproveResult? {
+        val info = CardInfo(
+            cardNumber = request.cardNumber,
+            birthDate = request.birthDate,
+            expiry = request.expiry,
+            password = request.password,
+            amount = request.amount
+        )
+        val enc = PaymentEncryptor.encrypt(info, API_KEY, IV)
+        val encRequestDto = TestPgApproveRequest(
+            enc = enc
+        )
+        logger.info("Thread [${Thread.currentThread().name}] - 외부 API 요청")
+        try {
+            val response = testPgApiRestClient.post()
+                .uri(TEST_PG_API_URI)
+                .header(API_KEY_HEADER, API_KEY)
+//                .contentType(MediaType.APPLICATION_JSON)
+                .body(encRequestDto)
+                .retrieve()
+                .body(PgApproveResult::class.java)
+            logger.info("Thread [${Thread.currentThread().name}] - 외부 API 응답 수신 완료: $response")
+            return response
+        } catch (e: HttpClientErrorException) {
+            logger.info("클라이언트 오류: ${e.statusCode} - ${e.responseBodyAsString}")
+            return PgApproveResult("null", LocalDateTime.now(), PaymentStatus.CANCELED)
+        } catch (e: HttpServerErrorException) {
+            logger.info("서버 오류: ${e.statusCode} - ${e.responseBodyAsString}")
+            return PgApproveResult("null", LocalDateTime.now(), PaymentStatus.CANCELED)
+        }
     }
 }
